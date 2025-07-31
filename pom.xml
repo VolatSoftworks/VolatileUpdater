@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.vortex.volatux</groupId>
     <artifactId>VolatileUpdater</artifactId>
-    <version>0b-0003c</version>
+    <version>0b-0004c</version>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>

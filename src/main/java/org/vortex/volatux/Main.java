@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Objects;
 
 public class Main {
     public static void main(String[] args) {
@@ -22,34 +23,12 @@ public class Main {
             mainPanel.setBackground(new Color(0x141414));
             mainPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
-            ImageIcon scaledIcon = new ImageIcon(new ImageIcon(Main.class.getResource("/VOLATILE_NOBG.png"))
+            ImageIcon scaledIcon = new ImageIcon(new ImageIcon(Objects.requireNonNull(Main.class.getResource("/VOLATILE_NOBG.png")))
                     .getImage().getScaledInstance(250, -1, Image.SCALE_SMOOTH));
             JLabel imageLabel = new JLabel(scaledIcon, SwingConstants.CENTER);
 
-            // Create slim progress bar with margins
-            JProgressBar progressBar = new JProgressBar() {
-                @Override
-                protected void paintComponent(Graphics g) {
-                    Graphics2D g2d = (Graphics2D) g.create();
-                    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-                    // Draw track (darker background)
-                    g2d.setColor(new Color(0x252525));
-                    g2d.fillRect(0, 0, getWidth(), getHeight());
-
-                    // Draw progress (blue fill)
-                    int width = (int) (getWidth() * (getValue() / 100.0));
-                    if (width > 0) {
-                        g2d.setColor(new Color(0x0096FF));
-                        g2d.fillRect(0, 0, width, getHeight());
-                    }
-                    g2d.dispose();
-                }
-            };
-            progressBar.setValue(45);
-            progressBar.setPreferredSize(new Dimension(0, 3));
-            progressBar.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10)); // Margins
-            progressBar.setOpaque(false);
+            JProgressBar progressBar = getJProgressBar();
 
             Point[] dragPoint = new Point[1];
             mainPanel.addMouseListener(new MouseAdapter() {
@@ -77,5 +56,32 @@ public class Main {
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
         });
+    }
+
+    private static JProgressBar getJProgressBar() {
+        JProgressBar progressBar = new JProgressBar() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2d = (Graphics2D) g.create();
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+                // Draw track (darker background)
+                g2d.setColor(new Color(0x252525));
+                g2d.fillRect(0, 0, getWidth(), getHeight());
+
+                // Draw progress (blue fill)
+                int width = (int) (getWidth() * (getValue() / 100.0));
+                if (width > 0) {
+                    g2d.setColor(new Color(0x0096FF));
+                    g2d.fillRect(0, 0, width, getHeight());
+                }
+                g2d.dispose();
+            }
+        };
+        progressBar.setValue(45);
+        progressBar.setPreferredSize(new Dimension(0, 3));
+        progressBar.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10)); // Margins
+        progressBar.setOpaque(false);
+        return progressBar;
     }
 }
