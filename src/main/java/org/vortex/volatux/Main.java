@@ -70,7 +70,7 @@ public class Main {
                 g2d.fillRect(0, 0, getWidth(), getHeight());
 
                 // Draw progress (blue fill)
-                int width = (int) (getWidth() * (getValue() / 100.0));
+                int width = (int) (getWidth() * getPercentComplete());
                 if (width > 0) {
                     g2d.setColor(new Color(0x0096FF));
                     g2d.fillRect(0, 0, width, getHeight());
@@ -78,7 +78,7 @@ public class Main {
                 g2d.dispose();
             }
         };
-        progressBar.setValue(45);
+        progressBar.setValue(0);
         progressBar.setPreferredSize(new Dimension(0, 3));
         progressBar.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10)); // Margins
         progressBar.setOpaque(false);
