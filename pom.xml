@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.vortex.volatux</groupId>
     <artifactId>VolatileUpdater</artifactId>
-    <version>0b-0004c</version>
+    <version>1b-0004c</version>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -13,6 +13,51 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>com.github.wvengen</groupId>
+                <artifactId>proguard-maven-plugin</artifactId>
+                <version>2.7.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>proguard</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <proguardVersion>7.8.2</proguardVersion>
+                    <obfuscate>true</obfuscate>
+                    <injar>${project.build.finalName}.jar</injar>
+                    <outjar>${project.build.finalName}-OBF.jar</outjar>
+                    <includeDependency>true</includeDependency>
+                    <options>
+                        <option>-keep public class org.vortex.volatux.Main { *; }</option>
+                        <option>-libraryjars ${java.home}/jmods(!**.jar;!module-info.class)</option>
+                        <option>-repackageclasses ''</option>
+                    </options>
+                    <archive>
+                        <manifest>
+                            <mainClass>Main</mainClass>
+                            <packageName>org.vortex.volatux</packageName>
+                        </manifest>
+                    </archive>
+
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.guardsquare</groupId>
+                        <artifactId>proguard-base</artifactId>
+                        <version>7.8.2</version>
+                        <scope>runtime</scope>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.guardsquare</groupId>
+                        <artifactId>proguard-core</artifactId>
+                        <version>9.2.0</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
